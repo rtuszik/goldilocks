@@ -56,8 +56,12 @@ func GetRouter(setters ...Option) *mux.Router {
 	router.Handle("/dashboard", Dashboard(*opts))
 	router.Handle("/dashboard/{namespace:[a-zA-Z0-9-]+}", Dashboard(*opts))
 
-	// namespace list
+	// namespace list (legacy HTML view)
 	router.Handle("/namespaces", NamespaceList(*opts))
+
+	// v2 SPA
+	router.Handle("/v2", V2Dashboard(*opts))
+	router.Handle("/v2/", V2Dashboard(*opts))
 
 	// root
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -68,12 +72,13 @@ func GetRouter(setters ...Option) *mux.Router {
 			return
 		}
 
-		klog.Infof("redirecting to %v", path.Join(opts.BasePath, "/namespaces"))
-		// default redirect on root path
-		http.Redirect(w, r, path.Join(opts.BasePath, "/namespaces"), http.StatusMovedPermanently)
+		klog.Infof("redirecting to %v", path.Join(opts.BasePath, "/v2"))
+		// default redirect to new SPA
+		http.Redirect(w, r, path.Join(opts.BasePath, "/v2"), http.StatusMovedPermanently)
 	})
 
 	// api
+	router.Handle("/api/namespaces", NamespacesAPI(*opts))
 	router.Handle("/api/{namespace:[a-zA-Z0-9-]+}", API(*opts))
 	return router
 }
