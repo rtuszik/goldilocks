@@ -1,0 +1,43 @@
+# Example: run the standalone UI alongside the goldilocks backend.
+#
+# Usage:
+#   docker-compose -f ui/docker-compose.yml up
+#
+# The UI will be available at http://localhost:8080
+# The backend API is available directly at http://localhost:8081 (optional)
+#
+# Prerequisites:
+#   - Build the goldilocks backend image first:
+#       make build-linux && docker build -t goldilocks:dev .
+#   - Build the UI image:
+#       docker build -f ui/Dockerfile -t goldilocks-ui .
+
+services:
+  goldilocks:
+    image: goldilocks:dev
+    command:
+      - /goldilocks
+      - dashboard
+      - --port=8081
+      - --on-by-default        # show all namespaces; remove if you label them manually
+    ports:
+      - "8081:8081"            # optional: expose backend directly for debugging
+    volumes:
+      - "${KUBECONFIG:-${HOME}/.kube/config}:/root/.kube/config:ro"
+
+  ui:
+    image: goldilocks-ui
+    build:
+      context: ..
+      dockerfile: ui/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - GOLDILOCKS_API_URL=http://goldilocks:8081
+    depends_on:
+      - goldilocks
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3

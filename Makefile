@@ -32,5 +32,7 @@ build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME) -ldflags "-X main.VERSION=$(VERSION)" -v
 build-docker: build-linux
 	docker build -t goldilocks:dev .
+build-ui-docker:
+	docker build -f ui/Dockerfile -t goldilocks-ui .
 e2e-test:
 	venom run e2e/tests/* --output-dir e2e/results --log info --strict
