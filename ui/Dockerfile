@@ -6,7 +6,7 @@
 # Run:
 #   docker run -p 8080:8080 -e GOLDILOCKS_API_URL=http://goldilocks:8081 goldilocks-ui
 
-FROM nginx:1.27-alpine
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 
 # Nginx config template — __GOLDILOCKS_API_URL__ is replaced at container start
 COPY ui/nginx.conf /etc/nginx/conf.d/default.conf.template
