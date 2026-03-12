@@ -34,12 +34,14 @@ go-test:
         entrypoint: [""]
     before_script:
         - mkdir -p /kaniko/.docker
+        - export REGISTRY_USERNAME="${CI_REGISTRY_USER:-$REGISTRY_USER}"
+        - export REGISTRY_PASSWORD="${CI_REGISTRY_PASSWORD:-$REGISTRY_PASSWORD}"
         - |
             cat > /kaniko/.docker/config.json <<EOF
             {
               "auths": {
                 "${REGISTRY_HOST}": {
-                  "username": "${REGISTRY_USER}",
+                  "username": "${REGISTRY_USERNAME}",
                   "password": "${REGISTRY_PASSWORD}"
                 }
               }
