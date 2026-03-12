@@ -19,6 +19,7 @@ bun run dev
 The dev server starts at `http://localhost:4321`. It proxies `/api/` requests to the backend defined in `astro.config.mjs` (default: `http://localhost:8081`).
 
 > To point at a different backend during dev, set `GOLDILOCKS_API_URL`:
+>
 > ```bash
 > GOLDILOCKS_API_URL=http://my-cluster:8081 bun run dev
 > ```
@@ -26,7 +27,7 @@ The dev server starts at `http://localhost:4321`. It proxies `/api/` requests to
 ## Commands
 
 | Command           | Description                          |
-|-------------------|--------------------------------------|
+| ----------------- | ------------------------------------ |
 | `bun install`     | Install dependencies                 |
 | `bun run dev`     | Start local dev server (port 4321)   |
 | `bun run build`   | Build static output to `dist/`       |
@@ -73,6 +74,6 @@ ui/
 
 ## Environment variables
 
-| Variable              | Default                 | Description                        |
-|-----------------------|-------------------------|------------------------------------|
-| `GOLDILOCKS_API_URL`  | `http://localhost:8081` | Goldilocks backend base URL (container runtime) |
+| Variable             | Default                 | Description                                     |
+| -------------------- | ----------------------- | ----------------------------------------------- |
+| `GOLDILOCKS_API_URL` | `http://localhost:8081` | Goldilocks backend base URL (container runtime) |
