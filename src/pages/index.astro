@@ -1,0 +1,26 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Topbar from '../components/Topbar.astro';
+---
+<Layout>
+  <div id="app">
+    <Sidebar />
+    <div class="main-wrapper">
+      <Topbar />
+      <main id="content" aria-live="polite">
+        <div class="empty-state">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h4"/>
+          </svg>
+          <h3>Select a namespace</h3>
+          <p>Choose a namespace from the sidebar to view VPA recommendations.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import '../scripts/app.ts';
+</script>

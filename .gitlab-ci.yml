@@ -4,8 +4,6 @@ stages:
     - publish
 
 variables:
-    GOCACHE: "$CI_PROJECT_DIR/.cache/go-build"
-    GOMODCACHE: "$CI_PROJECT_DIR/.cache/go-mod"
     REGISTRY_HOST: "registry.r10k.io"
     INITIAL_SEMVER_TAG: "v0.1.0"
     IMAGE_REPO: "registry.r10k.io/rtuszik/goldilocks-ui"
@@ -14,18 +12,16 @@ variables:
 default:
     interruptible: true
 
-go-test:
+ui-build:
     stage: test
-    image: golang:1.26.1-alpine3.23
-    before_script:
-        - apk add --no-cache git
+    image: oven/bun:1-alpine
     script:
-        - go test ./...
+        - bun install --frozen-lockfile
+        - bun run build
     cache:
         key: "${CI_COMMIT_REF_SLUG}"
         paths:
-            - .cache/go-build
-            - .cache/go-mod
+            - node_modules/
 
 .kaniko-publish:
     stage: publish
@@ -116,5 +112,5 @@ publish-image:
         DESTINATION_VERSION: "${IMAGE_REPO}:${RELEASE_VERSION}"
         DESTINATION_LATEST: "${IMAGE_REPO}:latest"
     needs:
-        - go-test
+        - ui-build
         - create-release
