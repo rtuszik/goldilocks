@@ -12,8 +12,7 @@ FROM nginxinc/nginx-unprivileged:1.27-alpine
 COPY ui/nginx.conf /etc/nginx/conf.d/default.conf.template
 
 # Startup script: runs before nginx starts, injects GOLDILOCKS_API_URL into the nginx config
-COPY ui/entrypoint.sh /docker-entrypoint.d/40-goldilocks.sh
-RUN chmod +x /docker-entrypoint.d/40-goldilocks.sh
+COPY --chmod=755 ui/entrypoint.sh /docker-entrypoint.d/40-goldilocks.sh
 
 # Process the SPA: replace the Go-template placeholder with "/" since nginx
 # handles all routing — the SPA uses relative API paths (/api/...) which
