@@ -1,16 +1,2 @@
-goldilocks
-cover*
-goreleaser.deb
-dist
-coverage.txt
-*.out
-debug
-
-hack/kind/autoscaler
 .vscode
-__debug_bin
 node_modules
-/dist
-docs/README.md
-
-.tool-versions

@@ -19,7 +19,7 @@ COPY --chmod=755 ui/entrypoint.sh /docker-entrypoint.d/40-goldilocks.sh
 # Process the SPA: replace the Go-template placeholder with "/" since nginx
 # handles all routing — the SPA uses relative API paths (/api/...) which
 # nginx proxies to the goldilocks backend.
-COPY pkg/dashboard/assets/v2/index.html /tmp/index.tpl
+COPY ui/index.html /tmp/index.tpl
 RUN sed 's|{{BASE_PATH}}|/|g' /tmp/index.tpl > /usr/share/nginx/html/index.html \
     && rm /tmp/index.tpl
 
