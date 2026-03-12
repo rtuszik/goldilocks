@@ -8,6 +8,8 @@
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 
+USER root
+
 # Nginx config template — __GOLDILOCKS_API_URL__ is replaced at container start
 COPY ui/nginx.conf /etc/nginx/conf.d/default.conf.template
 
@@ -20,5 +22,7 @@ COPY --chmod=755 ui/entrypoint.sh /docker-entrypoint.d/40-goldilocks.sh
 COPY pkg/dashboard/assets/v2/index.html /tmp/index.tpl
 RUN sed 's|{{BASE_PATH}}|/|g' /tmp/index.tpl > /usr/share/nginx/html/index.html \
     && rm /tmp/index.tpl
+
+USER nginx
 
 EXPOSE 8080
